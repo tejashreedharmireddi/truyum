@@ -1,0 +1,33 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: menuitemservice-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: Menuitemservice
+  template:
+    metadata:
+      labels:
+        app: Menuitemservice
+    spec:
+      containers:
+      - name: menuitemservicerepos
+        image: truyumcr.azurecr.io/menuitemservicerepos:latest
+        ports:
+        - containerPort: 8080
+      imagePullSecrets:
+      - name: dsconfigsn
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: menuitemservice
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    app: Menuitemservice
